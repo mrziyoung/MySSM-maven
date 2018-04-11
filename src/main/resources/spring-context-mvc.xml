@@ -4,24 +4,15 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:p="http://www.springframework.org/schema/p"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
-       xmlns:tx="http://www.springframework.org/schema/tx"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/context
          http://www.springframework.org/schema/context/spring-context-4.0.xsd
-         http://www.springframework.org/schema/tx
-        http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
         http://www.springframework.org/schema/mvc
         http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
-        http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
         ">
 
     <context:component-scan base-package="com.young.ssm.admin"/>
-
-    <context:component-scan base-package="com.young.ssm.util"/>
-
 
     <!-- 视图解析器 -->
     <bean id="viewResolver"
@@ -35,8 +26,40 @@
         <property name="maxUploadSize" value="3500000"/>
         <property name="defaultEncoding" value="UTF-8"/>
     </bean>
+    <!-- Start: 配置json消息转换器 & 参数解析-->
+    <bean id="objectMapper" class="com.fasterxml.jackson.databind.ObjectMapper">
+        <property name="dateFormat">
+            <bean class="java.text.SimpleDateFormat">
+                <constructor-arg index="0" type="java.lang.String" value="yyyy-MM-dd HH🇲🇲ss"/>
+            </bean>
+        </property>
+    </bean>
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <property name="supportedMediaTypes">
+                    <list>
+                        <value>application/json; charset=UTF-8</value>
+                    </list>
+                </property>
+                <property name="prettyPrint" value="true"/>
+                <property name="objectMapper" ref="objectMapper"/>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+    <!-- End: 配置json消息转换器 & 参数解析 -->
 
+    <!-- 使用了<url-pattern>/</url-pattern>,所以要对静态资源进行处理 -->
+    <mvc:default-servlet-handler/>
 
+    <!-- 默认的视图解析器 在上边的解析错误时使用 (默认使用html)- -->
+    <bean id="defaultViewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver"
+          p:order="1">
+        <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+        <property name="contentType" value="text/html"/>
+        <property name="prefix" value="/WEB-INF/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
 
 </beans>
 

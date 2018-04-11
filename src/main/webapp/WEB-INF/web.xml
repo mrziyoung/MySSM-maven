@@ -17,9 +17,6 @@
     <param-value>classpath:spring-context.xml</param-value>
   </context-param>
 
-
-
-
   <filter>
     <filter-name>encodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -37,7 +34,7 @@
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
-  <!-- spring请求配置，指向springmvc的核心配置文件，定义所有以.do结尾的请求都被springmvc拦截 -->
+  <!-- spring请求配置，指向springmvc的核心配置文件，定义RESTFUL的请求都被springmvc拦截 -->
   <servlet>
     <servlet-name>springMVC</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -51,7 +48,9 @@
 
   <servlet-mapping>
     <servlet-name>springMVC</servlet-name>
-    <url-pattern>*.do</url-pattern>
+    <!--<url-pattern>*.do</url-pattern>-->
+    <!--更改为RESTFUL风格的URI -->
+    <url-pattern>/</url-pattern>
   </servlet-mapping>
 
   <!--错误页面配置,这里只是简单的配置了一下 -->

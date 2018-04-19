@@ -1,7 +1,9 @@
 package com.young.ssm.service.impl;
 
+import com.young.ssm.common.Constants;
 import com.young.ssm.dao.UserDao;
 import com.young.ssm.entity.User;
+import com.young.ssm.redis.RedisUtil;
 import com.young.ssm.service.UserService;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,9 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserDao userDao;
+    @Resource
+    private RedisUtil redisUtil;
+
 
     @Override
     public User login(User user) {
@@ -31,7 +36,17 @@ public class UserServiceImpl implements UserService {
         if ("admin".equals(user.getUserName())) {
             return 0;
         }
-        return userDao.updateUser(user);
+        if (user.getUserName() == null || user.getPassword() == null ) {
+            return 0;
+        }
+        //删除缓存数据后再
+        if (userDao.updateUser(user) > 0) {
+            redisUtil.del(Constants.USER_CACHE_KEY + user.getId());
+            redisUtil.put(Constants.USER_CACHE_KEY +  user.getId(), user);
+            return 1;
+        }
+        return 0;
+
     }
 
     @Override
@@ -44,7 +59,11 @@ public class UserServiceImpl implements UserService {
         if (user.getUserName() == null || user.getPassword() == null || getTotalUser(null) > 90) {
             return 0;
         }
-        return userDao.addUser(user);
+        if(userDao.addUser(user)>0){
+            redisUtil.put(Constants.USER_CACHE_KEY + user.getId(),user);
+            return 1;
+        }
+        return 0;
     }
 
     @Override

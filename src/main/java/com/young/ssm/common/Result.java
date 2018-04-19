@@ -41,13 +41,13 @@ public class Result<T> implements Serializable {
         this.data = data;
     }
 
-    @Override
-    public String toString() {
-        return "Result{" +
-                "resultCode=" + resultCode +
-                ", message='" + message + '\'' +
-                ", data={" + data.toString() + "}" +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Result{" +
+//                "resultCode=" + resultCode +
+//                ", message='" + message + '\'' +
+//                ", data={" + data.toString() + "}" +
+//                '}';
+//    }
 
 }

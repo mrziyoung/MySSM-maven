@@ -27,14 +27,16 @@ function login() {
             data:reqMap,
             success : function(data) {
                 console.log(data);
+                //如果登录成功，则将用户信息放到cookie里
                 if(data.resultCode==200){
-                    alert("登录成功！");
-                    window.location.href = "../../welcome.html";
+                   setCookie("userName",data.data.currentUser.userName);
+                   setCookie("roleName",data.data.currentUser.roleName);
+                   window.location.href ="main.html";
                 }
             },
             error : function () {
                 alert("登录失败！");
-                window.location.href = "../../index.html";
+                window.location.href = "index.html";
             }
         });
         

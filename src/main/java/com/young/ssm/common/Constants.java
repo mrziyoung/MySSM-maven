@@ -7,4 +7,6 @@ public class Constants {
 
     public static final String ARTICLE_CACHE_KEY = "perfect-ssm:article:";//文章key
     public static final String PICTURE_CACHE_KEY = "perfect-ssm:picture:";//图片key
+    public static final String USER_CACHE_KEY = "user:";//用户key
+
 }

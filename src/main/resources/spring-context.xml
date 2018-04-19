@@ -8,11 +8,14 @@
     <!-- 使用注解的包，包括子集 -->
     <context:component-scan base-package="com.young.ssm.service"/>
     <context:component-scan base-package="com.young.ssm.dao"/>
+    <context:component-scan base-package="com.young.ssm.redis"/>
 
     <!-- druid监控配置 -->
     <import resource="classpath:spring-context-druid-stat.xml"/>
     <!-- 事务管理配置 -->
     <import resource="classpath:spring-context-tx.xml"/>
-    <!-- 定时器管理-->
+    <!-- 定时器管理
     <import resource="classpath:spring-quartz.xml"/>
+    -->
+
 </beans>
